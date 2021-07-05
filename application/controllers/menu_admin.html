@@ -1,0 +1,505 @@
+<head>
+  <link rel="icon" href="<?php echo base_url(); ?>assets/img/taisho.jpg" type="image/png"/>
+  <title>E-Sponsorship</title>
+  <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+<?php
+		$user_name="";
+		$group="";
+		$query = $this->db->query("SELECT a.name, photo, b.name as group_name from user a, groups b where a.id_group=b.id and id_user=".$this->session->userdata('id_user'));
+		foreach ($query->result() as $row2)
+		{			
+			$user_name=$row2->name;
+			$user_photo=$row2->photo;
+      $group=$row2->group_name;
+		}
+
+		$count="";
+		$query = $this->db->query("SELECT count(*) as jumlah from user WHERE active=1 and id_group=2");
+		foreach ($query->result() as $row2)
+		{			
+			$count=$row2->jumlah;
+		}
+		
+?>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" area-controls="navbar" aria-expanded="false">
+        <span class="sr-only">Toggle Navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img src="<?php echo base_url(); ?>assets/img/taisho.jpg" width="50" height="50" style="margin-top:3">&nbsp;&nbsp;</img>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+		<?php if($group=="CS" || $group=="RE" || $group=="CS" || $group=="MA") {  ?>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-database" style="font-size:12px"></i>&nbsp;&nbsp;CATALOGUE&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+			<?php if($group=="CS" || $group=="MA") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Menu" style="font-size:12px">
+                <i class="fa fa-file-text-o"></i>&nbsp;&nbsp;Menu</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/LogPage" style="font-size:12px">
+                <i class="fa fa-file-text-o"></i>&nbsp;&nbsp;User Activity</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Group" style="font-size:12px">
+                <i class="fa fa-users"></i>&nbsp;&nbsp;User Group</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Speciality" style="font-size:12px">
+                <i class="fa fa-stethoscope"></i>&nbsp;&nbsp;SPECIALITY</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Doctor" style="font-size:12px">
+                <i class="fa fa-user-md"></i>&nbsp;&nbsp;DOCTOR</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Hospital" style="font-size:12px">
+                <i class="fa fa-h-square"></i>&nbsp;&nbsp;HOSPITAL</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Bank" style="font-size:12px">
+                <i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;BANK</a>
+            </li>
+            <li class="divider"></li>
+			<?php }  ?>
+			<?php if($group=="RE") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Distributor" style="font-size:12px">
+                <i class="fa fa-sitemap" aria-hidden="true"></i>&nbsp;&nbsp;DISTRIBUTOR</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Channel" style="font-size:12px">
+                <i class="fa fa-sitemap" aria-hidden="true"></i>&nbsp;&nbsp;CHANNEL</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Branch" style="font-size:12px">
+                <i class="fa fa-sitemap" aria-hidden="true"></i>&nbsp;&nbsp;BRANCH</a>
+            </li>
+            <li class="divider"></li>
+			<?php }  ?>
+			<?php if($group=="RE" || $group=="MA" || $group=="CS") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/ProductGroup" style="font-size:12px">
+                <i class="fa fa-medkit"></i>&nbsp;&nbsp;PRODUCT GROUP</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Product" style="font-size:12px">
+                <i class="fa fa-medkit"></i>&nbsp;&nbsp;PRODUCT</a>
+            </li>
+			<?php }  ?>
+			<?php if($group=="RE") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/ProductDist" style="font-size:12px">
+                <i class="fa fa-medkit"></i>&nbsp;&nbsp;PRODUCT DISTRIBUTOR</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Upload" style="font-size:12px">
+                <i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;UPLOAD</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/PendingUpload" style="font-size:12px">
+                <i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;PENDING UPLOAD</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Stock" style="font-size:12px">
+                <i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;ACTUAL STOCK REPORT</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Customer" style="font-size:12px">
+                <i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;CUSTOMER</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/CustomerDist" style="font-size:12px">
+                <i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;CUSTOMER REDISTRIBUTION</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Pharmachain" style="font-size:12px">
+                <i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;PHARMACHAIN CUSTOMER</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Invoice" style="font-size:12px">
+                <i class="fa fa-usd" aria-hidden="true"></i>&nbsp;&nbsp;INVOICE</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/UserArea" style="font-size:12px">
+                <i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;UNIVERSAL</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Channel2" style="font-size:12px">
+                <i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;INTERNAL CHANNEL</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Channel3" style="font-size:12px">
+                <i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;INTERNAL CHANNEL (CUSTOMER)</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Channel4" style="font-size:12px">
+                <i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;INTERNAL CHANNEL (USER GROUP)</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Channel5" style="font-size:12px">
+                <i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;REPORTING (USER BRANCH)</a>
+            </li>
+			<?php }  ?>
+          </ul>
+        </li>
+		<?php }  ?>
+		<?php if($group!="MA" && $group!="CS" && $group!="MR" && $group!="MD" && $group!="RA") {  ?>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-file-text-o" style="font-size:12px"></i>&nbsp;&nbsp;REPORT&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report10" style="font-size:12px">
+                <i class="fa fa-table" aria-hidden="true"></i>&nbsp;&nbsp;Data Recapitulation</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report8" style="font-size:12px">
+                <i class="fa fa-tachometer" aria-hidden="true"></i>&nbsp;&nbsp;Dashboard</a>
+            </li>
+            <li class="disabled">
+              <a href="#" style="font-size:12px">
+                <i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp;&nbsp;Covered</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report1" style="font-size:12px">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;&nbsp;After Redistribution Sales</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report2" style="font-size:12px">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Trend Sales</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report3" style="font-size:12px">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;&nbsp;Trend Active Outlet</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report11" style="font-size:12px">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;Trend Non Active Outlet</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report4" style="font-size:12px">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Trend Outlet Covered</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report5" style="font-size:12px">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;&nbsp;Before Redistribution Sales</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report6" style="font-size:12px">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Trend Additional Customer</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report12" style="font-size:12px">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;Customer Sales</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report7" style="font-size:12px">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;&nbsp;Summary</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/Report9" style="font-size:12px">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Inventory Management</a>
+            </li>
+          </ul>
+        </li>
+		<?php } ?>
+        <li>
+          <a href="<?php echo base_url(); ?>index.php/User" style="font-size:12px">
+            <i class="fa fa-user"></i>&nbsp;&nbsp;USER</a>
+        </li>
+		<?php if($group!="RE") {  ?>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">&nbsp;&nbsp;MER&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/MER2List" style="font-size:12px">
+                <i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;MASTER EVENT REQUEST</a>
+            </li>
+			<?php if($group!="RE" && $group!="MR" && $group!="HIS" && $group!="RSM") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/AMEL" style="font-size:12px"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;APPROVED MASTER EVENT LIST</a>
+            </li>
+			<?php } ?>
+          </ul>
+        </li>
+		<?php } if($group!="RE") {  ?>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-external-link" aria-hidden="true"></i>&nbsp;&nbsp;THIRD PARTY&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/HCP1List?type=1" style="font-size:12px"><i class="fa fa-user-md" aria-hidden="true"></i>&nbsp;&nbsp;HCP SRF 1
+              </a>
+            </li>
+			<?php if($group=="MA" || $group=="CS") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/OfferLetterList?type=1" style="font-size:12px"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;SPONSORSHIP OFFER LETTER</a>
+            </li>
+			<?php } ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/HCP2List?type=1" style="font-size:12px"><i class="fa fa-user-md" aria-hidden="true"></i>&nbsp;&nbsp;HCP SRF 2</a>
+            </li>
+			<?php if($group=="MA" || $group=="CS") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/ConfirmationLetterHCPList?type=1" style="font-size:12px"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;CONFIRMATION LETTER HCP</a>
+            </li>
+			<?php } ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/HCPReportList?type=1" style="font-size:12px"><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;&nbsp;HCP REPORT</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/HCPList?type=1" style="font-size:12px"><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;&nbsp;HCP CONSULTANT</a>
+            </li>
+			<?php if($group=="MA" || $group=="CS") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/PermitList?type=1" style="font-size:12px"><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;&nbsp;PERMIT LETTER</a>
+            </li>
+			<?php } ?>
+			<?php if($group=="MA" || $group=="MD" || $group=="CS") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/AgreementList2?type=1" style="font-size:12px"><i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp;&nbsp;SPEAKER AGREEMENT</a>
+            </li>
+			<?php } ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/HCPReportList2?type=1" style="font-size:12px"><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;&nbsp;HCP CONSULTANT REPORT</a>
+            </li>
+			<?php if($group!="RE" && $group!="MR" && $group!="HIS" && $group!="RSM") {  ?>
+            <li class="divider"></li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/HCOList?type=1" style="font-size:12px"><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;&nbsp;HCO</a>
+            </li>
+			<?php if($group=="MA" || $group=="CS") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/ConfirmationLetterHCOList?type=1" style="font-size:12px"><i class="fa fa-envelope" aria-hidden="true">&nbsp;&nbsp;</i>CONFIRMATION LETTER HCO</a>
+            </li>
+			<?php } ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/HCOReportList?type=1" style="font-size:12px"><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;&nbsp;HCO REPORT</a>
+            </li>
+			<?php } ?>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">TPI&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/ScientificList?type=2" style="font-size:12px">SCIENTIFIC</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/ScientificReportList?type=2" style="font-size:12px"><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;&nbsp;SCIENTIFIC REPORT</a>
+            </li>
+			<?php if($group=="MA" || $group=="MD") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/AgreementList3?type=2" style="font-size:12px"><i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp;&nbsp;SPEAKER AGREEMENT</a>
+            </li>
+			<?php } ?>
+          </ul>
+        </li>
+		<?php if($group=="MA" || $group=="CS") {  ?>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;&nbsp;Thank You Letter&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/ThankYouList3?type=2" style="font-size:12px">
+                SCIENTIFIC</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/ThankYouList?type=1" style="font-size:12px"><i class="fa fa-user-md" aria-hidden="true"></i>&nbsp;&nbsp;
+                HCP</a>
+            </li>
+          </ul>
+        </li>
+        <?php }  ?>
+		<?php if($group!="RE" && $group!="HIS" && $group!="MR" && $group!="RSM") {  ?>
+            <li>
+              <a href="<?php echo base_url(); ?>index.php/KPKReportList?type=1"><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;KPK REPORT</a>
+            </li>
+        <?php } } ?>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <?php
+		if($user_photo=="")
+		{?>
+        <li>
+          <img class="img-circle" width="40" height="40" src="<?php echo base_url(); ?>assets/img/avatar.png" style="margin-top:9"></img>
+        </li>
+      <?php } else { ?>
+        <li>
+          <img class="img-circle" width="40" height="40" src="<?php echo base_url(); ?>assets/uploads/<?php echo $user_photo; ?>" style="margin-top:9"></img>
+        </li>
+        <?php } ?>
+        <li>
+          <a style="background-color: #5bc0de">
+            <?php echo $user_name; ?>&nbsp;[&nbsp;
+            <?php echo $group; ?>&nbsp;]</a>
+        </li>
+        <li>
+          <a href="<?php echo base_url(); ?>index.php/Login/logout" style="background-color: #5bc0de">Sign Out&nbsp;&nbsp;<i class="fa fa-sign-out" style="font-size:16px"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br>
+<br>
+<br>
+<style type="text/css">
+  .navbar.navbar-default {
+    background-color: #5bc0de;
+    border-color: #0d47a1;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-brand {
+    color: #000000;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-brand:focus,
+  .navbar.navbar-default .navbar-brand:hover {
+    color: #ffffff;
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-text {
+    color: #000000;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-nav > li > a {
+    padding-top: 20px;
+    color: #000000;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-nav > li > a:focus,
+  .navbar.navbar-default .navbar-nav > li > a:hover {
+    color: #ffffff;
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-nav > .active > a,
+  .navbar.navbar-default .navbar-nav > .active > a:focus,
+  .navbar.navbar-default .navbar-nav > .active > a:hover {
+    color: #ffffff;
+    font-size: 12px;
+    background-color: #5bc0de;
+  }
+
+  .navbar.navbar-default .navbar-nav > .open > a,
+  .navbar.navbar-default .navbar-nav > .open > a:focus,
+  .navbar.navbar-default .navbar-nav > .open > a:hover {
+    color: #ffffff;
+    font-size: 12px;
+    background-color: #5bc0de;
+  }
+
+  .navbar.navbar-default .navbar-toggle {
+    border-color: #ffffff;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-toggle:focus,
+  .navbar.navbar-default .navbar-toggle:hover {
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-toggle .icon-bar {
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-collapse,
+  .navbar.navbar-default .navbar-form {
+    border: none;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-link {
+    color: #000000;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-link:hover {
+    color: #ffd4d4;
+    font-size: 12px;
+  }
+
+  .dropdown-menu > li > a:focus,
+  .navbar-nav > li > .dropdown-menu > li > a:hover {
+    color: #ffffff;
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar-brand {
+    transform: translateX(-50%);
+    left: 50%;
+    font-size: 12px;
+    position: absolute;
+  }
+
+  .nav.navbar-nav > li.navbar-left {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 12px;
+  }
+
+  .navbar-brand {
+    padding: 0;
+    font-size: 12px;
+  }
+
+  .navbar-brand > img {
+    height: 90%;
+    width: auto;
+    font-size: 12px;
+  }
+
+  .banner {
+    width: 100%;
+    font-size: 12px;
+    /*background-color: #c3d7df;*/
+  }
+
+  .banner-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-size: 12px;
+  }
+
+  @media (min-width:768px) and (max-width:991px) {
+    .container.navbar-container {
+      width: 100%;
+      padding: 0;
+	  font-size: 12px;
+    }
+  }
+</style>

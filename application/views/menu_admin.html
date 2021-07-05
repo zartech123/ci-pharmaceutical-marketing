@@ -1,0 +1,309 @@
+<head>
+  <link rel="icon" href="<?php echo base_url(); ?>assets/img/taisho.jpg" type="image/png"/>
+  <title>E-Sponsorship</title>
+  <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
+  <!--script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script-->
+  <link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/font-awesome/css/font-awesome.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<?php
+		$user_name="";
+		$group="";
+		$query = $this->db->query("SELECT a.name, photo, b.name as group_name from user a, groups b where a.id_group=b.id and id_user=".$this->session->userdata('id_user'));
+		foreach ($query->result() as $row2)
+		{			
+			$user_name=$row2->name;
+			$user_photo=$row2->photo;
+			$group=$row2->group_name;
+		}
+
+		$count="";
+		$query = $this->db->query("SELECT count(*) as jumlah from user WHERE active=1 and id_group=2");
+		foreach ($query->result() as $row2)
+		{			
+			$count=$row2->jumlah;
+		}
+
+		$count_hco=0;
+		$query = $this->db->query("SELECT count(*) as jumlah from hco where state=6 and datediff(now(),updated_date2)>21 and id_hco not in (select id_hco from hco_report)");
+		foreach ($query->result() as $row2)
+		{			
+			$count_hco=$row2->jumlah;
+		}
+
+		$count_hcp2=0;
+		$query = $this->db->query("SELECT count(*) as jumlah from hcp2 where state=6 and datediff(now(),updated_date2)>21 and id_hcp2 not in (select id_hcp2 from hcp_report)");
+		foreach ($query->result() as $row2)
+		{			
+			$count_hcp2=$row2->jumlah;
+		}
+		
+		$count_hcp=0;
+		$query = $this->db->query("SELECT count(*) as jumlah from hcp where state=6 and datediff(now(),updated_date2)>21 and id_hcp not in (select id_hcp from hcp_report2)");
+		foreach ($query->result() as $row2)
+		{			
+			$count_hcp=$row2->jumlah;
+		}
+
+		$count_tpi=0;
+		$query = $this->db->query("SELECT count(*) as jumlah from scientific where state=6 and datediff(now(),updated_date3)>21 and id_sc not in (select id_sc from scientific_report)");
+		foreach ($query->result() as $row2)
+		{			
+			$count_tpi=$row2->jumlah;
+		}
+?>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" area-controls="navbar" aria-expanded="false">
+        <span class="sr-only">Toggle Navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img src="<?php echo base_url(); ?>assets/img/taisho.jpg" width="50" height="50" style="margin-top:3">&nbsp;&nbsp;</img>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+		<?php
+		$query = $this->db->query("select x.id_menu, x.name, x.page, x.icon from (
+									select id_menu, name, page, icon, menu_order from menu where level=0 and (id_menu in (SELECT distinct parent from menu a, menu_group b WHERE a.id_menu=b.id_menu and (id_group like '".$this->session->userdata('id_group').",%' or id_group like '%,".$this->session->userdata('id_group')."' or id_group like '%,".$this->session->userdata('id_group').",%' or id_group='".$this->session->userdata('id_group')."') and level=1)) 
+									union all 
+									select a.id_menu, name, page, icon, menu_order from menu a, menu_group b where a.id_menu=b.id_menu and level=0 and page<>'' and (id_group like '".$this->session->userdata('id_group').",%' or id_group like '%,".$this->session->userdata('id_group')."' or id_group like '%,".$this->session->userdata('id_group').",%' or id_group='".$this->session->userdata('id_group')."')
+									union all
+									select id_menu, name, page, icon, menu_order from menu where level=0 and is_all=1) x order by x.menu_order");
+		foreach ($query->result() as $row2)
+		{			
+			if(trim($row2->page)=="")
+			{
+				echo 
+				"<li class='dropdown'>
+				  <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>
+					".$row2->icon."&nbsp;&nbsp;".strtoupper($row2->name)."&nbsp;&nbsp;<i class='fa fa-chevron-down'></i>
+				  </a>
+				  <ul class='dropdown-menu'>";
+
+				$query2 = $this->db->query("SELECT name, page, icon, divider from menu a, menu_group b WHERE parent='".$row2->id_menu."' and a.id_menu=b.id_menu and (id_group like '".$this->session->userdata('id_group').",%' or id_group like '%,".$this->session->userdata('id_group')."' or id_group like '%,".$this->session->userdata('id_group').",%' or id_group='".$this->session->userdata('id_group')."') and level=1 order by menu_order");
+				foreach ($query2->result() as $row3)
+				{			
+					echo "
+					<li>
+					  <a href='".base_url()."index.php/".$row3->page."' style='font-size:12px'>
+						".$row3->icon."&nbsp;&nbsp;".strtoupper($row3->name)."</a>
+					</li>";
+					
+					if($row3->divider=="1")
+					{
+						echo "<li class='divider'></li>";
+					}
+				}
+				  echo "</ul>
+				</li>";
+			}
+			else
+			{
+				echo 
+				"<li>
+				  <a href='".base_url()."index.php/".$row2->page."'. style='font-size:12px'>
+					".$row2->icon."&nbsp;&nbsp;".strtoupper($row2->name)."</a>
+				</li>";
+			}
+		}
+		echo "</ul>";
+		
+		
+		?>
+
+      <ul class="nav navbar-nav navbar-right">
+        <?php
+		if($user_photo=="")
+		{?>
+        <li>
+          <img class="img-circle" width="40" height="40" src="<?php echo base_url(); ?>assets/img/avatar.png" style="margin-top:9"></img>
+        </li>
+      <?php } else { ?>
+        <li>
+          <img class="img-circle" width="40" height="40" src="<?php echo base_url(); ?>assets/uploads/<?php echo $user_photo; ?>" style="margin-top:9"></img>
+        </li>
+        <?php } ?>
+        <li>
+          <a style="background-color: #5bc0de">
+            <?php echo $user_name; ?>&nbsp;[&nbsp;
+            <?php echo $group; ?>&nbsp;]</a>
+        </li>
+        <li>
+          <a href="<?php echo base_url(); ?>index.php/Login/logout" style="background-color: #5bc0de">Sign Out&nbsp;&nbsp;<i class="fa fa-sign-out" style="font-size:16px"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <?php if(($this->session->userdata('id_group'))==11 || $this->session->userdata('id_group')==12)
+  { ?>
+  <div style="float:right;padding-bottom:5px">
+			<?php if($count_hcp2>0) { ?>
+			<span style="color:white;font-weight:bold;font-size:11px">HCP</span>&nbsp;<a href='Report16'><span class="badge" style="background-color:red"><?php echo $count_hcp2; ?></span></a>&nbsp;&nbsp;
+			<?php } ?>
+			<?php if($count_hco>0) { ?>
+			<span style="color:white;font-weight:bold;font-size:11px">HCO</span>&nbsp;<a href='Report15'><span class="badge" style="background-color:red"><?php echo $count_hco; ?></span></a>&nbsp;&nbsp;
+			<?php } ?>
+			<?php if($count_hcp>0) { ?>
+			<span style="color:white;font-weight:bold;font-size:11px">HCPC</span>&nbsp;<a href='Report17'><span class="badge" style="background-color:red"><?php echo $count_hcp; ?></span></a>&nbsp;&nbsp;
+			<?php } ?>
+			<?php if($count_tpi>0) { ?>
+			<span style="color:white;font-weight:bold;font-size:11px">SERF</span>&nbsp;<a href='Report18'><span class="badge" style="background-color:red"><?php echo $count_tpi; ?></span></a>&nbsp;&nbsp;
+			<?php } ?>
+			&nbsp;&nbsp;&nbsp;
+  </div>
+	<?php } ?>	
+</nav>
+  <?php if(($this->session->userdata('id_group'))==11 || $this->session->userdata('id_group')==12)
+  { ?>
+<br>
+	<?php } ?>	
+<br>
+<br>
+<br>
+<style type="text/css">
+ .navbar.navbar-default {
+    background-color: #5bc0de;
+    border-color: #0d47a1;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-brand {
+    color: #000000;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-brand:focus,
+  .navbar.navbar-default .navbar-brand:hover {
+    color: #ffffff;
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-text {
+    color: #000000;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-nav > li > a {
+    padding-top: 20px;
+    color: #000000;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-nav > li > a:focus,
+  .navbar.navbar-default .navbar-nav > li > a:hover {
+    color: #ffffff;
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-nav > .active > a,
+  .navbar.navbar-default .navbar-nav > .active > a:focus,
+  .navbar.navbar-default .navbar-nav > .active > a:hover {
+    color: #ffffff;
+    font-size: 12px;
+    background-color: #5bc0de;
+  }
+
+  .navbar.navbar-default .navbar-nav > .open > a,
+  .navbar.navbar-default .navbar-nav > .open > a:focus,
+  .navbar.navbar-default .navbar-nav > .open > a:hover {
+    color: #ffffff;
+    font-size: 12px;
+    background-color: #5bc0de;
+  }
+
+  .navbar.navbar-default .navbar-toggle {
+    border-color: #ffffff;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-toggle:focus,
+  .navbar.navbar-default .navbar-toggle:hover {
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-toggle .icon-bar {
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-collapse,
+  .navbar.navbar-default .navbar-form {
+    border: none;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-link {
+    color: #000000;
+    font-size: 12px;
+  }
+
+  .navbar.navbar-default .navbar-link:hover {
+    color: #ffd4d4;
+    font-size: 12px;
+  }
+
+  .dropdown-menu > li > a:focus,
+  .navbar-nav > li > .dropdown-menu > li > a:hover {
+    color: #ffffff;
+    background-color: #5bc0de;
+    font-size: 12px;
+  }
+
+  .navbar-brand {
+    transform: translateX(-50%);
+    left: 50%;
+    font-size: 12px;
+    position: absolute;
+  }
+
+  .nav.navbar-nav > li.navbar-left {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 12px;
+  }
+
+  .navbar-brand {
+    padding: 0;
+    font-size: 12px;
+  }
+
+  .navbar-brand > img {
+    height: 90%;
+    width: auto;
+    font-size: 12px;
+  }
+
+  .banner {
+    width: 100%;
+    font-size: 12px;
+    /*background-color: #c3d7df;*/
+  }
+
+  .banner-inner {
+    width: 1100px;
+    margin: 0 auto;
+    font-size: 12px;
+  }
+
+  @media (min-width:768px) and (width:991px) {
+    .container.navbar-container {
+      width: 100%;
+      padding: 0;
+	  font-size: 12px;
+    }
+  }
+</style>
+<script type="text/javascript">
+	function goto(loc)
+	{
+//		alert(loc);
+		$('#mainframe').attr('src', loc);
+	}
+</script>

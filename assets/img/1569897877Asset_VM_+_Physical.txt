@@ -1,0 +1,11 @@
+711 UDC2 Prod
+1323 UDC1 Prod
+27 UDC1 Mgt
+33 UDC2 Mgt
+VM Host : 259
+Physical Host ISAT : 245
+
+Physical 500
+
+
+	
