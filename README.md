@@ -1,6 +1,6 @@
 # ci-pharmaceutical-marketing
 
-Web based application based on CI that provide E2E Budgeting Business Process (Ethical and OTC) Product in Pharmaceutical Organization
+Web Application based on CI that provide E2E Budgeting Business Process (Ethical and OTC) Product in Pharmaceutical Organization
 
 This Application have several Modules :
 
